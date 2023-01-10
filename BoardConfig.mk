@@ -92,6 +92,7 @@ BOARD_SIRIUS_DYNAMIC_PARTITIONS_PARTITION_LIST := system \
                                                   vendor \
                                                   product
 BOARD_SIRIUS_DYNAMIC_PARTITIONS_SIZE := 6442446848
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 
 # Platform
 TARGET_BOARD_PLATFORM := $(TARGET_BOOTLOADER_BOARD_NAME)
