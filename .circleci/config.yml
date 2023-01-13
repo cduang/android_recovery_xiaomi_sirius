@@ -1,0 +1,40 @@
+#
+# Copyright (C) 2023 Dimas Yudha Pratama <fsdimasyudha@gmail.com>
+#
+version: 2.1
+jobs:
+  brunch:
+    working_directory: ~/
+    environment:
+      GIT_EMAIL: fsdimasyudha@gmail.com
+      GIT_NAME: Dimas Yudha Pratama
+    machine:
+      image: ubuntu-2204:2022.10.2
+    resource_class: large
+    steps:
+      - run:
+          name: Setup Environment
+          command: wget -O - https://raw.githubusercontent.com/fsdimasyudha/scripts/master/personal/android/setup.sh | bash
+      - run:
+          name: Sync Source Code
+          command: |
+            git clone https://gitlab.com/OrangeFox/sync.git -b master sync --depth=1
+            ./sync/orangefox_sync.sh --branch 12.1 --path ofox
+            rm -rf sync
+            cd ofox
+      - run:
+          name: Clone Device-specific Tree
+          command: |
+            git clone https://github.com/fsdimasyudha/android_device_xiaomi_sirius.git -b android-12.1 device/xiaomi/sirius --depth=1
+            git clone https://github.com/fsdimasyudha/android_kernel_xiaomi_sirius.git -b lineage-20 kernel/xiaomi/sirius --depth=1
+      - run:
+          name: Compile
+          command: |
+            . build/envsetup.sh
+            lunch twrp_sirius-eng
+            mka adbd recoveryimage -j$(nproc --all)
+
+workflows:
+  brunch:
+    jobs:
+      - brunch
