@@ -8,8 +8,8 @@ jobs:
     environment:
       GIT_EMAIL: fsdimasyudha@gmail.com
       GIT_NAME: Dimas Yudha Pratama
-    machine:
-      image: ubuntu-2204:2022.10.2
+    docker:
+      image: ubuntu:22.04
     resource_class: large
     steps:
       - run:
